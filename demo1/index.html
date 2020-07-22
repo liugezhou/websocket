@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>WebSocket</title>
+</head>
+<body>
+    <h1>Socket Test</h1>
+    <input type="text" id="lmz_sendText">
+    <button id="lmz_sendBtn">发送</button>
+    <div id="lmz_recv"></div>
+    <br>
+    <span>欢迎关注[Dangerous Wakaka]公众号</span>
+    <script type="text/javascript">
+        var websocket = new WebSocket("ws://echo.websocket.org/");
+        websocket.onopen = function(){
+            console.log("open 了");
+            document.getElementById("lmz_recv").innerHTML="Connected";
+        }
+        websocket.close = function(){
+             console.log("close 了");
+        }
+        websocket.onmessage = function(e){
+            console.log(e.data);
+             document.getElementById("lmz_recv").innerHTML=e.data;
+        }
+
+         document.getElementById("lmz_sendBtn").onclick = function(){
+             var txt =  document.getElementById("lmz_sendText").value;
+             websocket.send(txt);
+         }
+    </script>
+</body>
+</html>

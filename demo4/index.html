@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>WebSocket</title>
+</head>
+<body>
+<h1>Socket Test</h1>
+<input type="text" id="lmz_sendText">
+<button id="lmz_sendBtn">发送</button>
+<script type="text/javascript">
+    var websocket = new WebSocket("ws://localhost:8001/");
+    function showMessage(str,type){
+        var div = document.createElement("div");
+        div.innerHTML = str;
+        if(type=="enter"){
+            div.style.color="green";
+        }else if(type=="leave"){
+            div.style.color="red";
+        }
+        document.body.appendChild(div);
+        }
+
+    websocket.onopen = function(){
+        console.log("open 了");
+        document.getElementById("lmz_sendBtn").onclick = function(){
+         var txt =  document.getElementById("lmz_sendText").value;
+         if(txt){
+            websocket.send(txt);
+         }
+     }
+    }
+    websocket.close = function(){
+         console.log("close 了");
+    }
+    websocket.onmessage = function(e){
+        var mes = JSON.parse(e.data)
+        showMessage(mes.data,mes.type)
+    }
+    </script>
+</body>
+</html>
